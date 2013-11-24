@@ -1,8 +1,6 @@
 var http = require('http');
-var querystring = require('querystring');
-var util = require('util');
+var formidable = require('formidable');
 var form = require('fs').readFileSync('form3.html');
-var maxData = 2*1024*1024;
 
 http.createServer(function (req, res) {
 	if (req.method === 'GET') {
@@ -11,23 +9,14 @@ http.createServer(function (req, res) {
 	}
 
 	if (req.method === 'POST') {
-		var postData = '';
-		req.on('data', function (chunk) {
-			postData += chunk;
-			if (postData.length > maxData) {
-				postData = '';
-				this.pause();
-				res.writeHead(413);
-				res.end('データが大きすぎます。');
-			}
+		var incoming = new formidable.IncomingForm();
+		incoming.uploadDir = 'uploads';
+		incoming.on('file', function (field, file) {
+			if (!file.size) { return; }
+			res.writeHead(file.name + ' を受け取りました。');
 		}).on('end', function () {
-			if (!postData) {
-				res.end();
-				return;
-			}
-			var postDataObject = querystring.parse(postData);
-			console.log('ユーザが次のデータをPOSTしました。：\n' + postData);
-			res.end('あなたがPOSTしたデータ：\n' +  util.inspect(postDataObject));
+			res.end('すべてのファイルを受け取りました。');
 		});
+		incoming.parse(req);
 	}
 }).listen(8080);

@@ -26,8 +26,8 @@ http.createServer(function (req, res) {
 				return;
 			}
 			var postDataObject = querystring.parse(postData);
-			console.log('ユーザが次のデータをPOSTしました。：　¥n' + postData);
-			res.end('あなたがPOSTしたデータ：　' +  util.inspect(postDataObject));
+			console.log('ユーザが次のデータをPOSTしました。：\n' + postData);
+			res.end('あなたがPOSTしたデータ：\n' +  util.inspect(postDataObject));
 		});
 	}
 }).listen(8080);

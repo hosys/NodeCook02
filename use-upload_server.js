@@ -13,7 +13,9 @@ http.createServer(function (req, res) {
 		incoming.uploadDir = 'uploads';
 		incoming.on('file', function (field, file) {
 			if (!file.size) { return; }
-			res.writeHead(file.name + ' を受け取りました。');
+			res.write(file.name + ' を受け取りました。');
+		}).on('field', function (field, value) {
+			res.write(field + ' : ' + value + '\n');
 		}).on('end', function () {
 			res.end('すべてのファイルを受け取りました。');
 		});

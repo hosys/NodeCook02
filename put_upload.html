@@ -15,17 +15,17 @@
 				form = document.getElementById('form'),
 				file;
 
-			userfile.addEventlistner('change', function () {
+			userfile.addEventListener('change', function () {
 				file = this.files[0];
 			});
 
-			form.addEventlistner('submit', function (e) {
+			form.addEventListener('submit', function (e) {
 				e.preventDefault();
 				if (file) {
 					var xhr = new XMLHttpRequest();
 					xhr.file = file;
 					xhr.open('put', window.location, true);
-					xhr.setRequestHeader('x-uploadfilename', file.filename || file.name);
+					xhr.setRequestHeader('x-uploadedfilename', file.filename || file.name);
 					xhr.send(file);
 					file = '';
 					form.reset();

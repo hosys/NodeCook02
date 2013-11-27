@@ -1,5 +1,6 @@
 var http = require('http');
-var form = require('fs').readFileSync('put_upload.html');
+var fs = require('fs');
+var form = fs.readFileSync('put_upload.html');
 
 http.createServer(function (req, res) {
 	if (req.method === 'GET') {
@@ -14,8 +15,8 @@ http.createServer(function (req, res) {
 			chunk.copy(fileData, bufferOffset);
 			bufferOffset += chunk.length;
 		}).on('end', function () {
-			var rand = (Math.random() * Math.random()).toString(16).replace(',', '');
-			var to = 'upload/' + rand + '-' + req.headers['x-uploadedfilename'];
+			var rand = (Math.random() * Math.random()).toString(16).replace('.', '');
+			var to = 'uploads/' + rand + '-' + req.headers['x-uploadedfilename'];
 			fs.writeFile(to, fileData, function (err) {
 				if (err) { throw err; }
 				console.log('ファイルを' + to + ' に保存しました');
